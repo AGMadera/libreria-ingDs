@@ -1,0 +1,61 @@
+Create table libros(
+id_libro int,
+autor varchar2(150),
+titulo varchar2(150),
+editorial varchar2(150),
+precio float,
+rutaImagen varchar2(350),
+CONSTRAINT PK_id_libros primary key (id_libros)
+);
+
+Create table usuarios(
+id_usuario int,
+nombre varchar2(150),
+pass varchar2(150),
+CONSTRAINT PK_id_usuarios primary key (id_usuarios)
+);
+
+create sequence SEC_LIBRO
+start with 1
+increment by 1
+nomaxvalue;
+
+create sequence SEC_USUARIO
+start with 1
+increment by 1
+nomaxvalue;
+
+create or replace PROCEDURE GUARDAR_USUARIO(
+MY_ID_USUARIO OUT INTEGER, MY_NOMBRE IN VARCHAR2, MY_PASS IN VARCHAR2)
+AS
+BEGIN 
+SELECT SEC_USUARIO1.NEXTVAL INTO MY_ID_USUARIO FROM DUAL;
+INSERT INTO usuario VALUES(MY_ID_USUARIO, MY_NOMBRE, MY_PASS);
+END;
+
+
+create or replace PROCEDURE GUARDAR_LIBRO(
+MY_ID_LIBRO OUT INTEGER, MY_AUTOR IN VARCHAR2, MY_TITULO IN VARCHAR2, MY_EDITORIAL IN VARCHAR2, MY_PRECIO IN FLOAT, MY_RUTAIMAGEN IN VARCHAR2)
+AS
+BEGIN 
+SELECT SEC_USUARIO1.NEXTVAL INTO MY_ID_USUARIO FROM DUAL;
+INSERT INTO libros VALUES(MY_ID_LIBRO, MY_AUTOR,MY_TITULO, MY_EDITORIAL, MY_PRECIO, MY_RUTAIMAGEN);
+END;
+
+
+
+CREATE OR REPLACE TRIGGER DISPARADOR_LIBRO BEFORE INSERT ON libros FOR
+EACH ROW
+BEGIN
+IF :NEW.precio<0 THEN
+RAISE_APPLICATION_ERROR(-20001, 'NO PUEDES INTRODUCIR COSTOS MENORES QUE CERO');
+END IF;
+END;
+/
+
+CREATE OR REPLACE PROCEDURE BORRAR_LIBRO(MY_TITULO in varchar2)
+as
+begin 
+DELETE libros  WHERE titulo=MY_TITULO;
+end;
+/
