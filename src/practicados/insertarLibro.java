@@ -14,8 +14,8 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import java.sql.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+//import java.util.logging.Level;
+//import java.util.logging.Logger;
 
 
 /**
@@ -220,6 +220,8 @@ public class insertarLibro extends javax.swing.JFrame {
       
         
          String titulo= textTitulo.getText();
+         
+         
        try{
             //paso 1: Establecer conexion a ORACLE
            
@@ -315,8 +317,8 @@ public class insertarLibro extends javax.swing.JFrame {
 
                 jImagen.setIcon( icono );
                 
-                Connection cone=c.conectarse();
-                CallableStatement callate=cone.prepareCall("{call GUARDAR_LIBRO(?,?,?,?,?)}");
+                Connection con=c.conectarse();
+                CallableStatement callate=con.prepareCall("{call GUARDAR_LIBRO(?,?,?,?,?)}");
                 
                 callate.setString(1,textAutor.getText());
                 callate.setString(2,textTitulo.getText());
@@ -327,7 +329,7 @@ public class insertarLibro extends javax.swing.JFrame {
                 
                 callate.execute();
                 
-                cone.close();
+                con.close();
                 
                 
                 
@@ -396,14 +398,14 @@ public class insertarLibro extends javax.swing.JFrame {
         try{
 
                 
-                 Connection cone=c.conectarse();
-            CallableStatement callate=cone.prepareCall("{call BORRAR_LIBRO(?)}");
+                 Connection con=c.conectarse();
+            CallableStatement callate=con.prepareCall("{call BORRAR_LIBRO(?)}");
            
             callate.setString(1,textTitulo.getText());
             
             callate.execute();
             
-            cone.close();
+            con.close();
           
 
 
